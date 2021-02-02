@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block header %}
+<h1>{% block title %}Your Profile{% endblock %}</h1>
+{% endblock %}
+{% block menu %}
+
+<ul class="sidebar-nav">
+        <li class="sidebar-nav__item">
+
+            <a class="sidebar-nav__link" href="{{ url_for('blog.index') }}">
+            <span>Home</span></a>
+
+
+        </li>
+        <li class="sidebar-nav__item">
+          {% if g.user %}
+          <a class="sidebar-nav__link" href="{{ url_for('blog.create') }}">
+            <span>Create</span></a>
+          {% endif %}
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="#" class="sidebar-nav__link">
+            <span>Work</span>
+          </a>
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="{{ url_for('contact.send_email') }}" class="sidebar-nav__link">
+            <span>Contact</span>
+          </a>
+        </li>
+
+         <li class="sidebar-nav__item sidebar-nav__item--active">
+               {% if g.user %}
+          <a href="{{url_for('profile.get',id=user.id)}}" class="sidebar-nav__link">
+            <span>Profile</span>
+          </a>
+             {% endif %}
+        </li>
+      </ul>
+      {%endblock %}
+{% block header_menu %}
+
+{% if g.user.id %}
+<div class="header-menu">
+
+
+          <a href="{{url_for('auth.logout')}}" class="header-menu__logout">
+            <span>Log Out</span>
+          </a>
+        </div>
+
+{% else %}
+<div class="header-menu">
+
+          <a href="{{url_for('auth.login')}}" class="header-menu__login">
+              <span>Login</span></a>
+
+
+          <a href="{{url_for('auth.register')}}" class="header-menu__register">
+            <span>Register</span>
+          </a>
+
+      </div>
+
+{%endif%}
+
+{% endblock %}
+
+{% block middle %}
+<article class="profile">
+      {% if user.profile_pic %}
+<img src="http://{{request.host}}/static/images/{{user.profile_pic}}" alt="profile pic" class="profile-pic">
+
+             {% else %}
+         <div class="profile-placeholder-name">
+
+             {% for s in user.full_names.split() %}
+
+                 {{s[0]}}
+             {% endfor %}
+
+         </div>
+        {%endif%}
+    <div class="profile-details">
+        <h2 class="profile-name">{{user.full_names}}</h2>
+    <div class="profile-email">
+        {{user.email}}
+    </div>
+        <div class="edit-btn">
+            <a href="{{url_for('profile.update',id=user.id)}}" class="edit-btn">Edit Profile</a>
+        </div>
+
+    </div>
+
+</article>
+{% endblock %}
+

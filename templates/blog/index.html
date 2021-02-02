@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}All Posts{% endblock %}</h1>
+{% endblock %}
+{% block menu %}
+<ul class="sidebar-nav">
+        <li class="sidebar-nav__item sidebar-nav__item--active">
+
+            <a class="sidebar-nav__link" href="{{ url_for('blog.index') }}">
+            <span>Home</span></a>
+
+
+        </li>
+        <li class="sidebar-nav__item">
+          {% if g.user %}
+          <a class="sidebar-nav__link" href="{{ url_for('blog.create') }}">
+            <span>Create</span></a>
+          {% endif %}
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="#" class="sidebar-nav__link">
+            <span>Work</span>
+          </a>
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="{{ url_for('contact.send_email') }}" class="sidebar-nav__link">
+            <span>Contact</span>
+          </a>
+        </li>
+     <li class="sidebar-nav__item">
+         {% if g.user %}
+          <a href="{{url_for('profile.get',id=g.user.id)}}" class="sidebar-nav__link">
+            <span>Profile</span>
+          </a>
+           {% endif %}
+        </li>
+      </ul>
+{%endblock %}
+
+{% block header_menu %}
+
+{% if g.user.id %}
+<div class="header-menu">
+
+
+          <a href="{{url_for('auth.logout')}}" class="header-menu__logout">
+            <span>Log Out</span>
+          </a>
+        </div>
+
+{% else %}
+<div class="header-menu">
+
+          <a href="{{url_for('auth.login')}}" class="header-menu__login">
+              <span>Login</span></a>
+
+
+          <a href="{{url_for('auth.register')}}" class="header-menu__register">
+            <span>Register</span>
+          </a>
+
+      </div>
+
+{%endif%}
+
+{% endblock %}
+
+{% block middle %}
+
+  {% for post in posts %}
+<article class="post">
+  <header>
+    <div>
+         <img src="{{post.image_url}}" alt="images uploaded" class="post_images">
+
+
+
+      <h1 class="title">{{ post.title }}</h1>
+
+
+
+    </div>
+
+  </header>
+     <p class="post-body">{{ post.posts }}</p>
+    <div class="user-details">
+ {% if post.users.profile_pic %}
+<img src="http://{{request.host}}/static/images/{{post.users.profile_pic}}" alt="profile pic" class="profile-pic-sm">
+
+             {% else %}
+         <div class="profile-placeholder-name-sm">
+
+             {% for s in post.users.full_names.split() %}
+
+                 {{s[0]}}
+             {% endfor %}
+
+         </div>
+        {%endif%}
+      <div class="about-container">
+          <div class="about">
+               {{ post.users.full_names }}
+          </div>
+       <div class="time">
+           posted on  {{ post.created_on.strftime('%Y-%m-%d') }}
+       </div>
+
+      </div>
+
+
+        </div>
+     {% if g.user.id == post.user_id %}
+    <div class="post-options">
+        <a href="{{ url_for('blog.update', id=post['id']) }}" class="edit">Edit</a>
+
+        <form action="{{ url_for('blog.delete', id=post.id) }}" method="post">
+    <input class="delete" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+         </div>
+
+    {% endif %}
+</article>
+{% endfor %}
+
+{% endblock %}

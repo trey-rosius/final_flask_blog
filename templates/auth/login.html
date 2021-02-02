@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Log In{% endblock %}</h1>
+{% endblock %}
+{% block menu %}
+<ul class="sidebar-nav">
+        <li class="sidebar-nav__item">
+
+            <a class="sidebar-nav__link" href="{{ url_for('blog.index') }}">
+            <span>Home</span></a>
+
+
+        </li>
+        <li class="sidebar-nav__item">
+          {% if g.user %}
+          <a class="sidebar-nav__link" href="{{ url_for('blog.create') }}">
+            <span>Create</span></a>
+          {% endif %}
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="#" class="sidebar-nav__link">
+            <span>Work</span>
+          </a>
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="{{ url_for('contact.send_email') }}" class="sidebar-nav__link">
+            <span>Contact</span>
+          </a>
+        </li>
+      <li class="sidebar-nav__item">
+         {% if g.user %}
+          <a href="{{url_for('profile.get',id=g.user.id)}}" class="sidebar-nav__link">
+            <span>Profile</span>
+          </a>
+           {% endif %}
+        </li>
+      </ul>
+      {%endblock %}
+
+{% block middle %}
+  <div class="auth-content">
+        <div class="login">
+
+          <form class="login-form" method="post">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              class="login-form__input" required
+            /><br />
+
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              class="login-form__input" required
+            />
+            <br />
+            <input type="submit" class="login-form__submit" value="Log In" />
+          </form>
+          <div class="already-have-account">
+      Don't Have An Account ?
+    </div>
+
+      <a href="{{url_for('auth.register')}}" class="register-btn">Register</a>
+
+        </div>
+
+
+      </div>
+{% endblock %}

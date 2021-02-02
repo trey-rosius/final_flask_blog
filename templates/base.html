@@ -1,0 +1,59 @@
+<!doctype html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<body>
+
+<div class="container">
+  <section class="content">
+
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {%endfor%}
+    <div class="body-content">
+
+  <div class="left">
+    <div class="sidebar-menu">
+
+      {% block menu %} {% endblock %}
+    </div>
+    <div class="sidebar-footer">
+      <a href="#" class="sidebar-footer__social">
+        <svg class="sidebar-footer__icon">
+          <use xlink:href="/static/img/sprite.svg#icon-behance"></use>
+        </svg>
+      </a>
+      <a href="#" class="sidebar-footer__social">
+        <svg class="sidebar-footer__icon">
+          <use xlink:href="/static/img/sprite.svg#icon-dribbble"></use>
+        </svg>
+      </a>
+      <a href="#" class="sidebar-footer__social">
+        <svg class="sidebar-footer__icon">
+          <use xlink:href="/static/img/sprite.svg#icon-twitter"></use>
+        </svg>
+      </a>
+      <a href="#" class="sidebar-footer__social">
+        <svg class="sidebar-footer__icon">
+          <use xlink:href="/static/img/sprite.svg#icon-github"></use>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="header">
+      <div class="header-title">
+          {% block title %}{% endblock%}
+      </div>
+      {% block header_menu %}
+      {% endblock %}
+    </div>
+    <div class="middle">
+
+      {% block middle %} {% endblock %}
+    </div>
+  </div>
+</div>
+  </section>
+</div>
+</body>

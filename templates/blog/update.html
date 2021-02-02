@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Create Post{% endblock %}</h1>
+{% endblock %}
+{% block menu %}
+<ul class="sidebar-nav">
+        <li class="sidebar-nav__item">
+
+            <a class="sidebar-nav__link" href="{{ url_for('blog.index') }}">
+            <span>Home</span></a>
+        </li>
+        <li class="sidebar-nav__item  sidebar-nav__item--active">
+          {% if g.user %}
+          <a class="sidebar-nav__link" href="{{ url_for('blog.create') }}">
+            <span>Create</span></a>
+          {% endif %}
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="#" class="sidebar-nav__link">
+            <span>Work</span>
+          </a>
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="#" class="sidebar-nav__link">
+            <span>Contact</span>
+          </a>
+        </li>
+      <li class="sidebar-nav__item">
+         {% if g.user %}
+          <a href="{{url_for('profile.get',id=g.user.id)}}" class="sidebar-nav__link">
+            <span>Profile</span>
+          </a>
+           {% endif %}
+        </li>
+      </ul>
+      {%endblock %}
+{% block header_menu %}
+
+{% if g.user.id %}
+<div class="header-menu">
+
+
+          <a href="{{url_for('auth.logout')}}" class="header-menu__logout">
+            <span>Log Out</span>
+          </a>
+     <form action="{{ url_for('blog.delete', id=post.id) }}" method="post">
+    <input class="create-submit" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+        </div>
+
+{% else %}
+<div class="header-menu">
+
+          <a href="{{url_for('auth.login')}}" class="header-menu__login">
+              <span>Login</span></a>
+
+
+          <a href="{{url_for('auth.register')}}" class="header-menu__register">
+            <span>Register</span>
+          </a>
+
+      </div>
+
+{%endif%}
+
+{% endblock %}
+
+{% block middle %}
+
+      <form method="post" enctype=multipart/form-data class="create">
+
+    <input name="title" class="post-title" placeholder="Title of Post"
+      value="{{ request.form['title'] or post.title }}" required>
+
+    <textarea name="body" class="post-area">{{ request.form['body'] or post.posts }}</textarea>
+      <img src="{{post.image_url}}" alt="images uploaded" class="update-image">
+      <input type=file name=file class="choose-file">
+      <input type="submit" value="Save" class="create-submit">
+
+  </form>
+
+
+
+
+
+
+{% endblock %}

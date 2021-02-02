@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Contact Us{% endblock %}</h1>
+{% endblock %}
+{% block menu %}
+<ul class="sidebar-nav">
+        <li class="sidebar-nav__item">
+
+            <a class="sidebar-nav__link" href="{{ url_for('blog.index') }}">
+            <span>Home</span></a>
+
+
+        </li>
+        <li class="sidebar-nav__item">
+          {% if g.user %}
+          <a class="sidebar-nav__link" href="{{ url_for('blog.create') }}">
+            <span>Create</span></a>
+          {% endif %}
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="#" class="sidebar-nav__link">
+            <span>Work</span>
+          </a>
+        </li>
+        <li class="sidebar-nav__item sidebar-nav__item--active">
+          <a href="#" class="sidebar-nav__link">
+            <span>Contact</span>
+          </a>
+        </li>
+      <li class="sidebar-nav__item">
+         {% if g.user %}
+          <a href="{{url_for('profile.get',id=g.user.id)}}" class="sidebar-nav__link">
+            <span>Profile</span>
+          </a>
+           {% endif %}
+        </li>
+      </ul>
+      {%endblock %}
+{% block header_menu %}
+
+{% if g.user.id %}
+<div class="header-menu">
+
+
+          <a href="{{url_for('auth.logout')}}" class="header-menu__logout">
+            <span>Log Out</span>
+          </a>
+        </div>
+
+{% else %}
+<div class="header-menu">
+
+          <a href="{{url_for('auth.login')}}" class="header-menu__login">
+              <span>Login</span></a>
+
+
+          <a href="{{url_for('auth.register')}}" class="header-menu__register">
+            <span>Register</span>
+          </a>
+
+      </div>
+
+{%endif%}
+
+{% endblock %}
+
+{% block middle %}
+<form class="contact-form" method="post">
+
+    <input type="text" class="login-form__input" name="firstname" placeholder="Your name..">
+
+    <input type="text" class="login-form__input" name="lastname" placeholder="Your last name..">
+
+    <select id="country" name="country" class="countries">
+      <option value="australia">Cameroon</option>
+      <option value="australia">Australia</option>
+      <option value="canada">Canada</option>
+      <option value="usa">USA</option>
+    </select>
+
+
+    <textarea id="subject" name="subject" placeholder="Write something.." class="post-area"></textarea>
+
+    <input type="submit" value="Submit" class="login-form__submit">
+
+  </form>
+
+{% endblock %}

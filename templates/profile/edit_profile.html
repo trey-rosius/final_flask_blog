@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block header %}
+<h1>{% block title %}Edit Profile{% endblock %}</h1>
+{% endblock %}
+{% block menu %}
+
+<ul class="sidebar-nav">
+        <li class="sidebar-nav__item">
+
+            <a class="sidebar-nav__link" href="{{ url_for('blog.index') }}">
+            <span>Home</span></a>
+
+
+        </li>
+        <li class="sidebar-nav__item">
+          {% if g.user %}
+          <a class="sidebar-nav__link" href="{{ url_for('blog.create') }}">
+            <span>Create</span></a>
+          {% endif %}
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="#" class="sidebar-nav__link">
+            <span>Work</span>
+          </a>
+        </li>
+        <li class="sidebar-nav__item">
+          <a href="#" class="sidebar-nav__link">
+            <span>Contact</span>
+          </a>
+        </li>
+
+         <li class="sidebar-nav__item sidebar-nav__item--active">
+               {% if g.user %}
+          <a href="{{url_for('profile.get',id=user.id)}}" class="sidebar-nav__link">
+            <span>Profile</span>
+          </a>
+             {% endif %}
+        </li>
+      </ul>
+      {%endblock %}
+{% block header_menu %}
+
+{% if g.user.id %}
+<div class="header-menu">
+
+
+          <a href="{{url_for('auth.logout')}}" class="header-menu__logout">
+            <span>Log Out</span>
+          </a>
+        </div>
+
+{% else %}
+<div class="header-menu">
+
+          <a href="{{url_for('auth.login')}}" class="header-menu__login">
+              <span>Login</span></a>
+
+
+          <a href="{{url_for('auth.register')}}" class="header-menu__register">
+            <span>Register</span>
+          </a>
+
+      </div>
+
+{%endif%}
+
+{% endblock %}
+
+{% block middle %}
+  <div class="edit-scaffold">
+        <form class="login-form" method="post" enctype=multipart/form-data >
+        {% if user.profile_pic %}
+<img src="http://{{request.host}}/static/images/{{user.profile_pic}}" alt="profile pic" class="profile-pic">
+
+             {% else %}
+         <div class="profile-placeholder-name">
+
+             {% for s in user.full_names.split() %}
+
+                 {{s[0]}}
+             {% endfor %}
+
+         </div>
+        {%endif%}
+         <input type=file name=file class="choose-profile-pic">
+        <br />
+      <input
+        type="text"
+        id="full_names"
+        name="full_names"
+       value="{{ request.form['full_names'] or user.full_names }}"
+        placeholder="Enter your Full Names"
+        class="login-form__input"
+        required
+      /><br />
+      <input
+        type="email"
+        id="email"
+        name="email"
+        value="{{ request.form['email'] or user.email }}"
+        placeholder="Enter your email"
+        class="login-form__input"
+        readonly
+      /><br />
+      <input type="submit" class="login-form__submit" value="Edit Profile" />
+<br />
+
+    </form>
+ <a href="{{url_for('profile.get',id=user.id)}}" class="back-btn"><< back <<</a>
+
+
+  </div>
+
+
+
+{% endblock %}
+
